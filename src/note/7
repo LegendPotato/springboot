@@ -1,0 +1,139 @@
+Hadoop分布式环境搭建
+
+hadoop000: 192.168.199.102
+hadoop001: 192.168.199.247
+hadoop002: 192.168.199.138
+
+hostname设置：sudo vi /etc/sysconfig/network
+NETWORKING=yes
+HOSTNAME=hadoop001
+
+hostname和ip地址的设置：sudo vi /etc/hosts
+192.168.199.102 hadoop000
+192.168.199.247 hadoop001
+192.168.199.138 hadoop002
+
+各节点角色分配: 
+hadoop000: NameNode/DataNode  ResourceManager/NodeManager
+hadoop001: DataNode  NodeManager
+hadoop002: DataNode  NodeManager
+
+
+
+
+
+前置安装
+1）ssh免密码登陆
+在每台机器上运行：ssh-keygen -t rsa
+以hadooop000机器为主
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop000
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop001
+ssh-copy-id -i ~/.ssh/id_rsa.pub hadoop002
+
+2) jdk安装
+在hadoop000机器上解压jdk安装包，并设置JAVA_HOME到系统环境变量
+
+集群安装
+1）Hadoop安装
+	在hadoop000机器上解压Hadoop安装包，并设置HADOOP_HOME到系统环境变量
+
+	hadoop-env.sh
+		export JAVA_HOME=/home/hadoop/app/jdk1.7.0_79
+
+	core-site.xml
+		<property>
+			<name>fs.default.name</name>
+			<value>hdfs://hadoop000:8020</value>
+		</property>
+
+	hdfs-site.xml
+		<property>
+		  <name>dfs.namenode.name.dir</name>
+		  <value>/home/hadoop/app/tmp/dfs/name</value>
+		</property>
+
+		<property>
+		  <name>dfs.datanode.data.dir</name>
+		  <value>/home/hadoop/app/tmp/dfs/data</value>
+		</property>
+
+	yarn-site.xml
+		<property>
+		  <name>yarn.nodemanager.aux-services</name>
+		  <value>mapreduce_shuffle</value>
+		 </property>
+
+		<property>
+		    <name>yarn.resourcemanager.hostname</name>
+		    <value>hadoop000</value>
+		</property>
+
+	mapred-site.xml
+		<property>
+			<name>mapreduce.framework.name</name>
+			<value>yarn</value>
+		</property>
+
+	slaves
+		hadoop000
+		hadoop001
+		hadoop002
+
+2）分发安装包到hadoop001和hadoop002节点
+scp -r ~/app hadoop@hadoop001:~/
+scp -r ~/app hadoop@hadoop002:~/
+
+scp ~/.bash_profile hadoop@hadoop001:~/
+scp ~/.bash_profile hadoop@hadoop002:~/
+
+在hadoop001和hadoop002机器上让.bash_profile生效
+
+3）对NN做格式化：只要在hadoop000上执行即可
+	bin/hdfs namenode -format
+
+4) 启动集群：只要在hadoop000上执行即可
+	sbin/start-all.sh
+
+5) 验证
+	jps
+		hadoop000:
+			SecondaryNameNode
+			DataNode
+			NodeManager
+			NameNode
+			ResourceManager
+
+		hadoop001:
+			NodeManager
+			DataNode
+
+		hadoop002:
+			NodeManager
+			DataNode
+
+	webui: hadoop000:50070   hadoop000:8088
+
+6) 集群停止： stop-all.sh 
+
+
+将Hadoop项目运行到集群中
+1）上传数据到hadoop000机器的data目录下
+2）上传开发的jar到hadoop000机器的lib目录下
+3）需要将数据上传到hdfs
+4）在分布式集群上运行我们的mr程序
+hadoop jar ~/lib/hadoop-train-1.0-jar-with-dependencies.jar com.imooc.hadoop.project.LogApp /10000_access.log /browserout
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

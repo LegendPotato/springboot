@@ -1,7 +1,9 @@
-package com.zs;
+package com.zs.quartz;
 
+import com.zs.quartz.HelloJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,6 +14,8 @@ import java.util.Date;
  */
 
 public class HelloScheduler {
+
+
     public static void main(String[] args){
 
         //Job,封装业务逻辑
