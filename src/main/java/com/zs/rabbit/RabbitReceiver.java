@@ -7,6 +7,7 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 /**
+ * rabbitmq demo
  * @author zhangshuai_sx
  * @date 2019/1/7 16:44
  */

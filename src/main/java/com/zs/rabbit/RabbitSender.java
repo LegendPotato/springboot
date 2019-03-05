@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
+ * rabbitmq demo
  * @author zhangshuai_sx
  * @date 2019/1/7 16:41
  */
