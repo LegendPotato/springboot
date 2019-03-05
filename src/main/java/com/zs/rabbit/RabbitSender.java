@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2019/1/7 16:41
  */
 
-@Component
+//@Component
 public class RabbitSender {
 
     //自动注入RabbitTemplate模板类
