@@ -1,5 +1,6 @@
 package com.zs.controller;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,5 +16,6 @@ public class HelloWorld {
     public String hello(){
         return "hello China!";
     }
+
 }
 

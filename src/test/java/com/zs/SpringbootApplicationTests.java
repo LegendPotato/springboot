@@ -1,5 +1,6 @@
 package com.zs;
 
+import com.zs.bean.CostumConfig;
 import com.zs.mysql.UserService;
 import com.zs.rabbit.RabbitSender;
 import org.junit.Assert;
@@ -7,8 +8,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.SimpleDateFormat;
@@ -20,11 +24,16 @@ import java.util.Map;
 @SpringBootTest
 public class SpringbootApplicationTests {
 
-    @Autowired
+//    @Autowired
     private RabbitSender rabbitSender;
+
+    private Logger logger = LoggerFactory.getLogger(SpringbootApplicationTests.class);
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CostumConfig costumConfig;
 
     @Ignore
     public void contextLoads() {
@@ -40,12 +49,20 @@ public class SpringbootApplicationTests {
         rabbitSender.send("Hello RabbitMQ For Spring Boot!", properties);
     }
 
-    @Before
-    public void setUp() {
-        // 准备，清空user表
-        userService.deleteAllUsers();
-    }
+//    @Before
+//    public void setUp() {
+//        // 准备，清空user表
+//        userService.deleteAllUsers();
+//    }
 
+
+    @Autowired
+    private ApplicationContext ioc;
+
+    @Test
+    public void testIOC(){
+        System.out.println(ioc.containsBean("hello"));
+    }
 
     @Test
     public void query() throws Exception {
@@ -66,6 +83,11 @@ public class SpringbootApplicationTests {
         // 查数据库，应该有5个用户
         Assert.assertEquals(3, userService.getAllUsers().intValue());
 
+    }
+
+    @Test
+    public void testCustomConfig(){
+        System.out.println(costumConfig);
     }
 
 }

@@ -31,8 +31,8 @@ public class CityController {
 //    }
     //http://localhost:8888/updateCity?cityId=3&cityName=沈阳&cityIntroduce=辽宁省省会
     @GetMapping(value = "updateCity")
-    public String updateCity(int cityId,String cityName,String cityIntroduce){
-        City city = new City(cityId,cityName,cityIntroduce);
+    public String updateCity(City city){
+//        City city = new City(cityId,cityName,cityIntroduce);
         cityRepository.save(city);
         return "success";
     }

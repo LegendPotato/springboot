@@ -19,7 +19,11 @@ public class City {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int cityId;
+
+    @Column(name = "city_name")
     private String cityName;
+
+    @Column(name = "city_introduce")
     private String cityIntroduce;
 
     public City(int cityId, String cityName, String cityIntroduce) {
